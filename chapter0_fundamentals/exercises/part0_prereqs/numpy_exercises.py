@@ -152,30 +152,51 @@ print("#25:", arr)
 #### 26. What is the output of the following script? (★☆☆)
 # # Author: Jake VanderPlas
 
-print(sum(range(5),-1))
+print(sum(range(5),-1)) #  10-1 = 9
 from numpy import *
-print(sum(range(5),-1))
+print(sum(range(5),-1)) # sum of range(5) by axis -1, which refers to the last axist -> there is only one axis -> 10
 
 #### 27. Consider an integer vector Z, which of these expressions are legal? (★☆☆)
 # ```python
-# Z**Z
-# 2 << Z >> 2
-# Z <- Z
-# 1j*Z
-# Z/1/1
-# Z<Z>Z
+Z = np.arange(3)
+
+print(Z**Z)
+print(2 << Z >> 2)
+print(Z <- Z)
+print(1j*Z)
+print(Z/1/1)
+# print(Z<Z>Z) # Does not work because Z<Z>Z = (Z < Z) and (Z > Z). Numpy comparison produces boolean array which cannot be coerced with 'and'
 # ```
+
 
 #### 28. What are the result of the following expressions? (★☆☆)
-# ```python
-# np.array(0) / np.array(0)
-# np.array(0) // np.array(0)
-# np.array([np.nan]).astype(int).astype(float)
-# ```
+print(np.array(0) / np.array(0))
+print(np.array(0) // np.array(0))
+print(np.array([np.nan]).astype(int).astype(float))
+
+'''
+My Guess
+1: np scalar holding 1
+2: np scalar holding 0
+3: error
+
+Result
+nan
+0
+[0.]
+'''
 
 #### 29. How to round away from zero a float array ? (★☆☆)
+arr = np.random.uniform(-100, 100, 5)
+print("#29 before:", arr)
+arr = np.sign(arr) * np.ceil(np.abs(arr))
+print("#29 after:", arr)
 
 #### 30. How to find common values between two arrays? (★☆☆)
+arr1 = np.random.randint(0, 20, 10)
+arr2 = np.random.randint(0, 20, 10)
+intersection = np.intersect1d(arr1, arr2)
+print("#30:", intersection)
 
 #### 31. How to ignore all numpy warnings (not recommended)? (★☆☆)
 
