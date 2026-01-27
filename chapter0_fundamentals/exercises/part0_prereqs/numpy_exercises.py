@@ -199,55 +199,91 @@ intersection = np.intersect1d(arr1, arr2)
 print("#30:", intersection)
 
 #### 31. How to ignore all numpy warnings (not recommended)? (★☆☆)
+np.seterr(all="ignore")
 
 #### 32. Is the following expressions true? (★☆☆)
 # ```python
-# np.sqrt(-1) == np.emath.sqrt(-1)
+print(np.sqrt(-1) == np.emath.sqrt(-1))
+print(np.sqrt(-1)) # -1j
+print(type(np.emath.sqrt(-1))) # numpy.complex128
 # ```
 
+# Guess: np.nan == some representation of i, therefore False. 
+# Answer: False
+
 #### 33. How to get the dates of yesterday, today and tomorrow? (★☆☆)
+import datetime 
+today = np.datetime64(datetime.datetime.now(), "D")
+yesterday = today - np.timedelta64(1, "D")
+tomorrow = today + np.timedelta64(1, "D")
+print("#33: today:", today)
+print("yesterday:", yesterday)
+print("tomorrow:", tomorrow)
 
 #### 34. How to get all the dates corresponding to the month of July 2016? (★★☆)
+# First try
+# july_first = np.datetime64("2016-07-01", "D")
+# august_first = np.datetime64("2016-08-01", "D")
+# curr = july_first 
+# while curr < august_first:
+#     print(curr)
+#     curr += np.timedelta64(1, "D")
+
+# Second try with hint from Codex :)
+dates = np.arange(np.datetime64("2016-07-01", "D"), np.datetime64("2016-08-01", "D"), np.timedelta64(1, "D"))
+print("#34", dates)
 
 #### 35. How to compute ((A+B)*(-A/2)) in place (without copy)? (★★☆)
 
 #### 36. Extract the integer part of a random array of positive numbers using 4 different methods (★★☆)
+# Codex: skip it — mostly function-name variety; low ML relevance
 
 #### 37. Create a 5x5 matrix with row values ranging from 0 to 4 (★★☆)
 
 #### 38. Consider a generator function that generates 10 integers and use it to build an array (★☆☆)
+# Codex: skip it — trivial Python generator/np.array usage
 
 #### 39. Create a vector of size 10 with values ranging from 0 to 1, both excluded (★★☆)
+# Codex: skip it — linspace/arange trivia; little thinking
 
 #### 40. Create a random vector of size 10 and sort it (★★☆)
+# Codex: skip it — basic sort API; not much depth
 
 #### 41. How to sum a small array faster than np.sum? (★★☆)
+# Codex: skip it — micro-optimization; not ML-relevant
 
 #### 42. Consider two random arrays A and B, check if they are equal (★★☆)
 
 #### 43. Make an array immutable (read-only) (★★☆)
+# Codex: skip it — niche; rarely used in ML workflows
 
 #### 44. Consider a random 10x2 matrix representing cartesian coordinates, convert them to polar coordinates (★★☆)
 
 #### 45. Create random vector of size 10 and replace the maximum value by 0 (★★☆)
 
 #### 46. Create a structured array with `x` and `y` coordinates covering the [0,1]x[0,1] area (★★☆)
+# Codex: skip it — structured dtypes are niche for ML
 
 #### 47. Given two arrays, X and Y, construct the Cauchy matrix C (Cij =1/(xi - yj)) (★★☆)
 
 #### 48. Print the minimum and maximum representable values for each numpy scalar type (★★☆)
+# Codex: skip it — dtype limits are reference material, not core practice
 
 #### 49. How to print all the values of an array? (★★☆)
+# Codex: skip it — printing config, not ML-relevant
 
 #### 50. How to find the closest value (to a given scalar) in a vector? (★★☆)
 
 #### 51. Create a structured array representing a position (x,y) and a color (r,g,b) (★★☆)
+# Codex: skip it — structured dtypes are niche for ML
 
 #### 52. Consider a random vector with shape (100,2) representing coordinates, find point by point distances (★★☆)
 
 #### 53. How to convert a float (32 bits) array into an integer (32 bits) array in place?
+# Codex: skip it — dtype casting detail; low ML payoff
 
 #### 54. How to read the following file? (★★☆)
+# Codex: skip it — file parsing/IO edge case; not core numpy
 # ```
 # 1, 2, 3, 4, 5
 # 6,  ,  , 7, 8
@@ -255,6 +291,7 @@ print("#30:", intersection)
 # ```
 
 #### 55. What is the equivalent of enumerate for numpy arrays? (★★☆)
+# Codex: skip it — function-name trivia
 
 #### 56. Generate a generic 2D Gaussian-like array (★★☆)
 
@@ -267,10 +304,13 @@ print("#30:", intersection)
 #### 60. How to tell if a given 2D array has null columns? (★★☆)
 
 #### 61. Find the nearest value from a given value in an array (★★☆)
+# Codex: skip it — duplicate of #50
 
 #### 62. Considering two arrays with shape (1,3) and (3,1), how to compute their sum using an iterator? (★★☆)
+# Codex: skip it — iterator trick; broadcasting is the key concept
 
 #### 63. Create an array class that has a name attribute (★★☆)
+# Codex: skip it — ndarray subclassing is niche
 
 #### 64. Consider a given vector, how to add 1 to each element indexed by a second vector (be careful with repeated indices)? (★★★)
 
@@ -291,18 +331,23 @@ print("#30:", intersection)
 #### 72. How to swap two rows of an array? (★★★)
 
 #### 73. Consider a set of 10 triplets describing 10 triangles (with shared vertices), find the set of unique line segments composing all the  triangles (★★★)
+# Codex: skip it — geometry-specific and low ML payoff
 
 #### 74. Given a sorted array C that corresponds to a bincount, how to produce an array A such that np.bincount(A) == C? (★★★)
+# Codex: skip it — obscure inverse-bincount trick
 
 #### 75. How to compute averages using a sliding window over an array? (★★★)
 
 #### 76. Consider a one-dimensional array Z, build a two-dimensional array whose first row is (Z[0],Z[1],Z[2]) and each subsequent row is  shifted by 1 (last row should be (Z[-3],Z[-2],Z[-1]) (★★★)
 
 #### 77. How to negate a boolean, or to change the sign of a float inplace? (★★★)
+# Codex: skip it — trivial operation; no real thinking
 
 #### 78. Consider 2 sets of points P0,P1 describing lines (2d) and a point p, how to compute distance from p to each line i (P0[i],P1[i])? (★★★)
+# Codex: skip it — geometry niche; not core ML numpy
 
 #### 79. Consider 2 sets of points P0,P1 describing lines (2d) and a set of points P, how to compute distance from each point j (P[j]) to each line i (P0[i],P1[i])? (★★★)
+# Codex: skip it — geometry niche; not core ML numpy
 
 #### 80. Consider an arbitrary array, write a function that extracts a subpart with a fixed shape and centered on a given element (pad with a `fill` value when necessary) (★★★)
 
@@ -315,33 +360,41 @@ print("#30:", intersection)
 #### 84. Extract all the contiguous 3x3 blocks from a random 10x10 matrix (★★★)
 
 #### 85. Create a 2D array subclass such that Z[i,j] == Z[j,i] (★★★)
+# Codex: skip it — ndarray subclassing is niche
 
 #### 86. Consider a set of p matrices with shape (n,n) and a set of p vectors with shape (n,1). How to compute the sum of of the p matrix products at once? (result has shape (n,1)) (★★★)
 
 #### 87. Consider a 16x16 array, how to get the block-sum (block size is 4x4)? (★★★)
 
 #### 88. How to implement the Game of Life using numpy arrays? (★★★)
+# Codex: skip it — fun but not ML-relevant
 
 #### 89. How to get the n largest values of an array (★★★)
 
 #### 90. Given an arbitrary number of vectors, build the cartesian product (every combination of every item) (★★★)
 
 #### 91. How to create a record array from a regular array? (★★★)
+# Codex: skip it — record arrays are niche in ML
 
 #### 92. Consider a large vector Z, compute Z to the power of 3 using 3 different methods (★★★)
+# Codex: skip it — method variety drill; little insight
 
 #### 93. Consider two arrays A and B of shape (8,3) and (2,2). How to find rows of A that contain elements of each row of B regardless of the order of the elements in B? (★★★)
+# Codex: skip it — combinatorial/niche pattern; low payoff
 
 #### 94. Considering a 10x3 matrix, extract rows with unequal values (e.g. [2,2,3]) (★★★)
 
 #### 95. Convert a vector of ints into a matrix binary representation (★★★)
+# Codex: skip it — bit manipulation; not core ML numpy
 
 #### 96. Given a two dimensional array, how to extract unique rows? (★★★)
 
 #### 97. Considering 2 vectors A & B, write the einsum equivalent of inner, outer, sum, and mul function (★★★)
 
 #### 98. Considering a path described by two vectors (X,Y), how to sample it using equidistant samples (★★★)?
+# Codex: skip it — geometry/sampling niche
 
 #### 99. Given an integer n and a 2D array X, select from X the rows which can be interpreted as draws from a multinomial distribution with n degrees, i.e., the rows which only contain integers and which sum to n. (★★★)
+# Codex: skip it — specialized multinomial filter; not core
 
 #### 100. Compute bootstrapped 95% confidence intervals for the mean of a 1D array X (i.e., resample the elements of an array with replacement N times, compute the mean of each sample, and then compute percentiles over the means). (★★★)
