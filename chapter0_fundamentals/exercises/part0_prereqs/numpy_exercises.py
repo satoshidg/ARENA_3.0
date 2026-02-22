@@ -234,6 +234,7 @@ dates = np.arange(np.datetime64("2016-07-01", "D"), np.datetime64("2016-08-01", 
 print("#34", dates)
 
 #### 35. How to compute ((A+B)*(-A/2)) in place (without copy)? (★★☆)
+A = np.random.rand(5,5)
 
 #### 36. Extract the integer part of a random array of positive numbers using 4 different methods (★★☆)
 # Codex: skip it — mostly function-name variety; low ML relevance
