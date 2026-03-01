@@ -235,11 +235,14 @@ print("#34", dates)
 
 #### 35. How to compute ((A+B)*(-A/2)) in place (without copy)? (★★☆)
 A = np.random.rand(5,5)
+print(A)
 
 #### 36. Extract the integer part of a random array of positive numbers using 4 different methods (★★☆)
 # Codex: skip it — mostly function-name variety; low ML relevance
 
 #### 37. Create a 5x5 matrix with row values ranging from 0 to 4 (★★☆)
+mat = np.random.randint(0, 4, (5, 5))
+print(mat)
 
 #### 38. Consider a generator function that generates 10 integers and use it to build an array (★☆☆)
 # Codex: skip it — trivial Python generator/np.array usage
@@ -254,11 +257,26 @@ A = np.random.rand(5,5)
 # Codex: skip it — micro-optimization; not ML-relevant
 
 #### 42. Consider two random arrays A and B, check if they are equal (★★☆)
+# First try
+A = np.random.randint(0, 10, 10)
+B = np.random.randint(0, 10, 10)
+is_equal = all(np.equal(A, B))
+print(is_equal)
+
+# Codex Answer
+is_equal = np.array_equal(A, B)
+print(is_equal)
 
 #### 43. Make an array immutable (read-only) (★★☆)
 # Codex: skip it — niche; rarely used in ML workflows
 
 #### 44. Consider a random 10x2 matrix representing cartesian coordinates, convert them to polar coordinates (★★☆)
+cartesian_coordinates = np.random.randint(-100, 100, (10, 2))
+polar_coordinates = np.empty((10, 2))
+for row in cartesian_coordinates:
+    print(row)
+    
+
 
 #### 45. Create random vector of size 10 and replace the maximum value by 0 (★★☆)
 
