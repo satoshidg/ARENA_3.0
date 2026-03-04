@@ -1,8 +1,13 @@
 # %% 
 # Imports
 import torch
-from utils import render_lines_with_plotly
+from torch import Tensor
+from jaxtyping import Float
 import einops
+from utils import render_lines_with_plotly
+import tests
+import traceback
+
 # %%
 _ORIGIN = torch.zeros(3)
 _X = 1
@@ -40,5 +45,54 @@ def make_rays_1d(num_pixels: int, y_limit: float) -> Tensor:
 rays1d = make_rays_1d(9, 10.0)
 print(rays1d)
 fig = render_lines_with_plotly(rays1d)
+
+# %%
+def intersect_ray_1d(
+    ray: Float[Tensor, "points dims"], segment: Float[Tensor, "points dims"]
+) -> bool:
+    """
+    ray: shape (n_points=2, n_dim=3)  # O, D points
+    segment: shape (n_points=2, n_dim=3)  # L_1, L_2 points
+
+    Return True if the ray intersects the segment.
+    """
+
+
+    """
+    Thoughts notes:
+    ray = [A,B,C], segment = 1=[D,E,F], 2=[G,H,I]
+    1. compute a vector seg_vec seg1->seg2
+    2. confirm ray and seg_vec do have an intersection
+    3. calcualte the intersection
+    4. calcuate whether the intersection is within the segment
+    """
+    ray_vector = ray[1]
+    seg_vec = segment[1]-segment[0]
+
+    A = einops.rearrange(torch.stack((ray_vector, -1 * seg_vec)), "x y -> y x")[:2]
+    B = segment[0][:2]
+
+    try:
+        uv = torch.linalg.solve(A, B)
+    except Exception:
+        return False
+
+    u, v = uv
+    return 0 <= u and 0 <= v and v <= 1
+
+
+# %% 
+ray = torch.stack([torch.zeros(3), torch.concat((torch.randn(2), torch.zeros(1)))])
+segment = torch.stack([torch.concat((torch.randn(2), torch.zeros(1))), torch.concat((torch.randn(2), torch.zeros(1)))])
+print("ray:", ray)
+print("segment:", segment)
+
+does_cross = intersect_ray_1d(ray, segment)
+print("result:", does_cross)
+
+# %%
+tests.test_intersect_ray_1d(intersect_ray_1d)
+tests.test_intersect_ray_1d_special_case(intersect_ray_1d)
+
 
 # %%
