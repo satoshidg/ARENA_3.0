@@ -10,8 +10,6 @@ import traceback
 
 # %%
 _ORIGIN = torch.zeros(3)
-_X = 1
-_Z = 0
 def make_rays_1d(num_pixels: int, y_limit: float) -> Tensor:
     """
     num_pixels: The number of pixels in the y dimension. Since there is one ray per pixel, this is
@@ -30,11 +28,10 @@ def make_rays_1d(num_pixels: int, y_limit: float) -> Tensor:
         [[0, 0, 0], [1, 1, 0]],
     ]
     """
-    y_increment = 2 * y_limit / (num_pixels-1)
-    Ys = torch.arange(-y_limit, y_limit+y_increment, y_increment)
+    Ys = torch.linspace(-y_limit, y_limit, num_pixels)
     origins = einops.repeat(_ORIGIN, "x -> new_axis x", new_axis=num_pixels)
-    Xs = torch.full((num_pixels, ), _X)
-    Zs = torch.full((num_pixels, ), _Z)
+    Xs = torch.ones(num_pixels)
+    Zs = torch.zeros(num_pixels)
 
     rays = torch.stack([Xs, Ys, Zs], dim=1)
     output = torch.stack([origins, rays], dim=1)
@@ -57,15 +54,6 @@ def intersect_ray_1d(
     Return True if the ray intersects the segment.
     """
 
-
-    """
-    Thoughts notes:
-    ray = [A,B,C], segment = 1=[D,E,F], 2=[G,H,I]
-    1. compute a vector seg_vec seg1->seg2
-    2. confirm ray and seg_vec do have an intersection
-    3. calcualte the intersection
-    4. calcuate whether the intersection is within the segment
-    """
     ray_vector = ray[1]
     seg_vec = segment[1]-segment[0]
 
@@ -73,11 +61,10 @@ def intersect_ray_1d(
     B = segment[0][:2]
 
     try:
-        uv = torch.linalg.solve(A, B)
+        u, v = torch.linalg.solve(A, B)
     except Exception:
         return False
 
-    u, v = uv
     return 0 <= u and 0 <= v and v <= 1
 
 
@@ -93,6 +80,3 @@ print("result:", does_cross)
 # %%
 tests.test_intersect_ray_1d(intersect_ray_1d)
 tests.test_intersect_ray_1d_special_case(intersect_ray_1d)
-
-
-# %%
